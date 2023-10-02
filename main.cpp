@@ -18,5 +18,8 @@ cout << "Enter the total run time: ";
 cin >> timeLeft;
 
 
+// initialize LoadBalancer
+LoadBalancer lb = LoadBalancer(numSevers, timeLeft);
+
 
 }
