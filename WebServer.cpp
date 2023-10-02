@@ -5,4 +5,4 @@ public:
     bool isBusy;
     int timeLeft;
     Request currentRequest;
-}
+};
