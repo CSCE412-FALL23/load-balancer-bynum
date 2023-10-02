@@ -13,7 +13,7 @@ public:
         this->ipIn = ipIn;
 
         this->ipOut = ipOut;
-        
+
         this->requestTime = time;
     }
 
