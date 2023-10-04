@@ -2,10 +2,12 @@
 
 class WebServer {
 public:
+    int serverId;
     bool isBusy;
     Request currentRequest;
 
-    WebServer() {
+    WebServer(int serverId) {
+        this->serverId = serverId;
         this->isBusy = false;
         this->currentRequest = Request();
     }
