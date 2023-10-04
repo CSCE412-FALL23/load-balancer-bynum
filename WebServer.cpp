@@ -9,6 +9,6 @@ public:
     WebServer(int serverId) {
         this->serverId = serverId;
         this->isBusy = false;
-        this->currentRequest = Request();
+        
     }
 };

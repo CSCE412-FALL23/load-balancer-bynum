@@ -49,21 +49,34 @@ class LoadBalancer {
 
         // main loop
         while (timeLeft > 0) {
+
+            // if queue is more than 70% full, add 30% more servers
+            if (this->requestQueue.size() >= floor(this->queueCapacity * 0.7)) {
+                int numNewServers = floor(this->webServers.size() * 0.3);
+                for (int i = 0; i < numNewServers; i++) {
+                    cout << "Server " << this->numUniqueServers << " has been added." << endl;
+                    WebServer ws = WebServer(this->numUniqueServers++);
+                    
+                    this->webServers.push_back(ws);
+    
+                }
+            }
+            
             // check if any servers are available
-            for (int i = 0; i < this->numServers; i++) {
+            for (int i = 0; i < this->webServers.size(); i++) {
                 if (!this->webServers[i].isBusy) {
                     // if server is available, assign it a request
-                    this->webServers[i].currentRequest = this->requestQueue.front();
-                    this->webServers[i].isBusy = true;
+                    this->webServers.at(i).currentRequest = this->requestQueue.front();
+                    this->webServers.at(i).isBusy = true;
                     this->requestQueue.pop();
                 }
                 else {
                     // if server is busy, decrement its timeLeft
                     this->webServers[i].currentRequest.requestTime--;
                     // if server is done, change the isBusy flag
-                    if (this->webServers[i].currentRequest.requestTime == 0) {
-                        this->webServers[i].isBusy = false;
-                        cout << "A request from IP " << this->webServers[i].currentRequest.ipIn << " has been processed by server " << this->webServers[i].serverId << endl;
+                    if (this->webServers.at(i).currentRequest.requestTime == 0) {
+                        this->webServers.at(i).isBusy = false;
+                        cout << "A request from IP " << this->webServers.at(i).currentRequest.ipIn << " has been processed by server " << this->webServers[i].serverId << endl;
                         this->totalRequestsProcessed++;
                     }
                 }
@@ -71,16 +84,8 @@ class LoadBalancer {
             // decrement timeLeft
             timeLeft--;
 
-            // if queue is more than 70% full, add 20% more servers
-            if (this->requestQueue.size() >= floor(this->queueCapacity * 0.7)) {
-                int numNewServers = floor(this->numServers * 0.2);
-                for (int i = 0; i < numNewServers; i++) {
-                    cout << "Server " << this->numUniqueServers << " has been added." << endl;
-                    WebServer ws = WebServer(this->numUniqueServers++);
-                    this->webServers.push_back(ws);
-                }
-                this->numServers += numNewServers;
-            }
+            
+            
             // generate 0-2 new requests randomly
             int numNewRequests = rand() % 3;
             for (int i = 0; i < numNewRequests; i++) {
@@ -91,8 +96,11 @@ class LoadBalancer {
                     continue;
 
                 }
-                Request r = Request();
-                this->requestQueue.push(r);
+                else {
+                    Request r = Request();
+                    cout << "segfault here?" << endl;
+                    this->requestQueue.push(r);
+                }
             }
 
 
@@ -100,7 +108,7 @@ class LoadBalancer {
 
         // Display log summary
         cout << "Load Balancer Summary:" << endl;
-        cout << "Active servers: " << this->numServers << endl;
+        cout << "Active servers: " << this->webServers.size() << endl;
         cout << "Requests in queue: " << this->requestQueue.size() << endl;
         cout << "Discarded Requests: " << this->numRejections << endl;
         cout << "Total Processed Requests: " << this->totalRequestsProcessed << endl;
