@@ -49,6 +49,7 @@ class LoadBalancer {
             this->requestQueue.push(r);
         }
 
+        cout << "Starting Queue Size: " << this->requestQueue.size() << endl;
         // main loop
         while (timeLeft > 0) {
 
@@ -104,10 +105,13 @@ class LoadBalancer {
         }
 
         // Display log summary
+        cout << endl << endl;
         cout << "Load Balancer Summary:" << endl;
         cout << "Active servers: " << this->webServers.size() << endl;
         cout << "Requests in queue: " << this->requestQueue.size() << endl;
         cout << "Discarded Requests: " << this->numRejections << endl;
         cout << "Total Processed Requests: " << this->totalRequestsProcessed << endl;
+        cout << "Ending Queue Size: " << this->requestQueue.size() << endl;
+        cout << "Task time range: 3 - 100 cycles" << endl;
     }
 };
