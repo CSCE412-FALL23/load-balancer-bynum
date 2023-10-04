@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <math.h> // integer floor function
 
 #include "WebServer.cpp"
 using namespace std;
@@ -69,6 +70,17 @@ class LoadBalancer {
             }
             // decrement timeLeft
             timeLeft--;
+
+            // if queue is more than 70% full, add 20% more servers
+            if (this->requestQueue.size() >= floor(this->queueCapacity * 0.7)) {
+                int numNewServers = floor(this->numServers * 0.2);
+                for (int i = 0; i < numNewServers; i++) {
+                    cout << "Server " << this->numUniqueServers << " has been added." << endl;
+                    WebServer ws = WebServer(this->numUniqueServers++);
+                    this->webServers.push_back(ws);
+                }
+                this->numServers += numNewServers;
+            }
             // generate 0-2 new requests randomly
             int numNewRequests = rand() % 3;
             for (int i = 0; i < numNewRequests; i++) {
