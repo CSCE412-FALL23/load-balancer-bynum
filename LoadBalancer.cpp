@@ -50,41 +50,37 @@ class LoadBalancer {
         // main loop
         while (timeLeft > 0) {
 
-            // if queue is more than 70% full, add 30% more servers
-            if (this->requestQueue.size() >= floor(this->queueCapacity * 0.7)) {
-                int numNewServers = floor(this->webServers.size() * 0.3);
-                for (int i = 0; i < numNewServers; i++) {
-                    cout << "Server " << this->numUniqueServers << " has been added." << endl;
-                    WebServer ws = WebServer(this->numUniqueServers++);
-                    
-                    this->webServers.push_back(ws);
-    
-                }
+            // if queue is getting full, add a server
+            if (this->requestQueue.size() >= this->queueCapacity - 5) {
+                cout << "Server " << this->numUniqueServers << " has been added." << endl;
+                WebServer ws = WebServer(this->numUniqueServers++);
+                this->webServers.push_back(ws);
             }
-            
+            else if (this->requestQueue.size() <= this->queueCapacity / 2){ // if queue is getting empty remove a server
+                cout << "Server " << this->webServers.back().serverId << " has been removed." << endl;
+                this->webServers.pop_back();
+            }
+
             // check if any servers are available
             for (int i = 0; i < this->webServers.size(); i++) {
-                if (!this->webServers[i].isBusy) {
+                    if (this->webServers.at(i).countDown == 0 && !this->requestQueue.empty()) {
                     // if server is available, assign it a request
                     this->webServers.at(i).currentRequest = this->requestQueue.front();
-                    this->webServers.at(i).isBusy = true;
+                    this->webServers.at(i).countDown = this->webServers.at(i).currentRequest.requestTime;
                     this->requestQueue.pop();
                 }
                 else {
                     // if server is busy, decrement its timeLeft
-                    this->webServers[i].currentRequest.requestTime--;
-                    // if server is done, change the isBusy flag
-                    if (this->webServers.at(i).currentRequest.requestTime == 0) {
-                        this->webServers.at(i).isBusy = false;
-                        cout << "A request from IP " << this->webServers.at(i).currentRequest.ipIn << " has been processed by server " << this->webServers[i].serverId << endl;
+                    this->webServers.at(i).countDown--;
+                    // if server is done, log completion
+                    if (this->webServers.at(i).countDown == 0) {
+                        cout << "A request from IP " << this->webServers.at(i).currentRequest.ipIn << " has been processed by server " << this->webServers.at(i).serverId << endl;
                         this->totalRequestsProcessed++;
                     }
                 }
             }
             // decrement timeLeft
             timeLeft--;
-
-            
             
             // generate 0-2 new requests randomly
             int numNewRequests = rand() % 3;
@@ -98,7 +94,6 @@ class LoadBalancer {
                 }
                 else {
                     Request r = Request();
-                    cout << "segfault here?" << endl;
                     this->requestQueue.push(r);
                 }
             }

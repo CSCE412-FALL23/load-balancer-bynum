@@ -23,10 +23,10 @@ public:
         this->ipOut = this->GenerateRandomIp();
 
         this->requestTime = 3 + rand() % 3;
+    
     }
 
     string GenerateRandomIp() {
-        srand(time(NULL));
         int octet1 = rand() % 255;
         int octet2 = rand() % 255;
         int octet3 = rand() % 255;

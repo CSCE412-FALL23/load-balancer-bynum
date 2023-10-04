@@ -3,12 +3,12 @@
 class WebServer {
 public:
     int serverId;
-    bool isBusy;
+    int countDown;
     Request currentRequest;
 
     WebServer(int serverId) {
         this->serverId = serverId;
-        this->isBusy = false;
+        this->countDown = 0;
         
     }
 };
