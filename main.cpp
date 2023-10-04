@@ -17,6 +17,7 @@ int timeLeft;
 cout << "Enter the total run time: ";
 cin >> timeLeft;
 
+// RNG seed
 srand(time(NULL));
 
 // initialize LoadBalancer
