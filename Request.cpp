@@ -22,7 +22,7 @@ public:
 
         this->ipOut = this->GenerateRandomIp();
 
-        this->requestTime = 3 + rand() % 3;
+        this->requestTime = 3 + rand() % 98;
     
     }
 

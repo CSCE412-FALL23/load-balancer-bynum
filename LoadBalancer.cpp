@@ -28,6 +28,8 @@ class LoadBalancer {
         this->numRejections = 0;
         this->numUniqueServers = 0;
         this->totalRequestsProcessed = 0;
+
+        freopen("log.txt", "w", stdout);
         
     }
 
@@ -56,7 +58,7 @@ class LoadBalancer {
                 WebServer ws = WebServer(this->numUniqueServers++);
                 this->webServers.push_back(ws);
             }
-            else if (this->requestQueue.size() <= this->queueCapacity / 2){ // if queue is getting empty remove a server
+            else if (this->requestQueue.size() <= this->queueCapacity / 2 + 5 && !this->requestQueue.empty() ){ // if queue is getting empty remove a server
                 cout << "Server " << this->webServers.back().serverId << " has been removed." << endl;
                 this->webServers.pop_back();
             }
