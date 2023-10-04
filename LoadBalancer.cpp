@@ -14,6 +14,7 @@ class LoadBalancer {
     int queueCapacity;
     int numRejections;
     int numUniqueServers;
+    int totalRequestsProcessed;
 
     LoadBalancer(int numServers, int timeLeft) {
         cout << "Initializing Load Balancer..." << endl;
@@ -25,6 +26,7 @@ class LoadBalancer {
         this->queueCapacity = numServers * 5;
         this->numRejections = 0;
         this->numUniqueServers = 0;
+        this->totalRequestsProcessed = 0;
         
     }
 
@@ -61,6 +63,7 @@ class LoadBalancer {
                     if (this->webServers[i].currentRequest.requestTime == 0) {
                         this->webServers[i].isBusy = false;
                         cout << "A request from IP " << this->webServers[i].currentRequest.ipIn << " has been processed by server " << this->webServers[i].serverId << endl;
+                        this->totalRequestsProcessed++;
                     }
                 }
             }
@@ -82,5 +85,12 @@ class LoadBalancer {
 
 
         }
+
+        // Display log summary
+        cout << "Load Balancer Summary:" << endl;
+        cout << "Active servers: " << this->numServers << endl;
+        cout << "Requests in queue: " << this->requestQueue.size() << endl;
+        cout << "Discarded Requests: " << this->numRejections << endl;
+        cout << "Total Processed Requests: " << this->totalRequestsProcessed << endl;
     }
 };
