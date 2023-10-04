@@ -21,5 +21,7 @@ cin >> timeLeft;
 // initialize LoadBalancer
 LoadBalancer lb = LoadBalancer(numSevers, timeLeft);
 
+// Run LoadBalancer
+lb.RunLoadBalancer();
 
 }

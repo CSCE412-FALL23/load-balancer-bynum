@@ -3,6 +3,10 @@
 class WebServer {
 public:
     bool isBusy;
-    int timeLeft;
     Request currentRequest;
+
+    WebServer() {
+        this->isBusy = false;
+        this->currentRequest = Request();
+    }
 };
