@@ -1,0 +1,122 @@
+\doxysection{Load\+Balancer.\+cpp}
+\hypertarget{_load_balancer_8cpp_source}{}\label{_load_balancer_8cpp_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <math.h>}\ \textcolor{comment}{//\ integer\ floor\ function}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WebServer.cpp"{}}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_load_balancer}{LoadBalancer}}\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ queue<Request>\ \mbox{\hyperlink{class_load_balancer_a615bae2d6a1e48d5f4e3de93e5c3ef73}{requestQueue}};\ }
+\DoxyCodeLine{00018\ \ \ \ \ vector<WebServer>\ \mbox{\hyperlink{class_load_balancer_a92410471e31c50cbbb8210801d4ee647}{webServers}};\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{timeLeft}};\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{numServers}};\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_ad20412f28ad82e72a35dc817ced14cc9}{queueCapacity}};\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_a7ee50bb5e2f30a9e570056e61d9bd469}{numRejections}};\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_a80aa181961e77ebe39e2bccdc74ce6bd}{numUniqueServers}};\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_a5921ff432ceb1a26bb2a87e7d3db4491}{totalRequestsProcessed}};\ }
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{class_load_balancer_affc9dc4c283d20bacc85a66cb721fd19}{LoadBalancer}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{numServers}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{timeLeft}})\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Initializing\ Load\ Balancer..."{}}\ <<\ endl;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ this-\/>requestQueue\ =\ queue<Request>();}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ this-\/>webServers\ =\ vector<WebServer>();}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ this-\/>timeLeft\ =\ \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{timeLeft}};}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ this-\/>numServers\ =\ \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{numServers}};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ this-\/>queueCapacity\ =\ \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{numServers}}\ *\ 5;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ this-\/>numRejections\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ this-\/>numUniqueServers\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ this-\/>totalRequestsProcessed\ =\ 0;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ freopen(\textcolor{stringliteral}{"{}log.txt"{}},\ \textcolor{stringliteral}{"{}w"{}},\ stdout);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_a47688969f3510b6916aa0519c1571431}{RunLoadBalancer}}()\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Running\ Load\ Balancer..."{}}\ <<\ endl;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ initialize\ web\ servers}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ this-\/>\mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{numServers}};\ i++)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Server\ "{}}\ <<\ this-\/>numUniqueServers\ <<\ \textcolor{stringliteral}{"{}\ has\ been\ added."{}}\ <<\ endl;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_web_server}{WebServer}}\ ws\ =\ \mbox{\hyperlink{class_web_server}{WebServer}}(this-\/>numUniqueServers++);}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.push\_back(ws);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ create\ full\ queue\ of\ requests}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ this-\/>\mbox{\hyperlink{class_load_balancer_ad20412f28ad82e72a35dc817ced14cc9}{queueCapacity}};\ i++)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_request}{Request}}\ r\ =\ \mbox{\hyperlink{class_request}{Request}}();}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>requestQueue.push(r);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Starting\ Queue\ Size:\ "{}}\ <<\ this-\/>requestQueue.size()\ <<\ endl;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ main\ loop}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{timeLeft}}\ >\ 0)\ \{}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ queue\ is\ getting\ full,\ add\ a\ server}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>requestQueue.size()\ >=\ this-\/>queueCapacity\ -\/\ 5)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Server\ "{}}\ <<\ this-\/>numUniqueServers\ <<\ \textcolor{stringliteral}{"{}\ has\ been\ added."{}}\ <<\ endl;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_web_server}{WebServer}}\ ws\ =\ \mbox{\hyperlink{class_web_server}{WebServer}}(this-\/>numUniqueServers++);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.push\_back(ws);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (this-\/>requestQueue.size()\ <=\ this-\/>queueCapacity\ /\ 2\ +\ 5\ \&\&\ !this-\/>requestQueue.empty()\ )\{\ \textcolor{comment}{//\ if\ queue\ is\ getting\ empty\ remove\ a\ server}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Server\ "{}}\ <<\ this-\/>webServers.back().serverId\ <<\ \textcolor{stringliteral}{"{}\ has\ been\ removed."{}}\ <<\ endl;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.pop\_back();}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ if\ any\ servers\ are\ available}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ this-\/>webServers.size();\ i++)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>webServers.at(i).countDown\ ==\ 0\ \&\&\ !this-\/>requestQueue.empty())\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ server\ is\ available,\ assign\ it\ a\ request}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.at(i).currentRequest\ =\ this-\/>requestQueue.front();}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.at(i).countDown\ =\ this-\/>webServers.at(i).currentRequest.requestTime;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>requestQueue.pop();}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ server\ is\ busy,\ decrement\ its\ timeLeft}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>webServers.at(i).countDown-\/-\/;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ server\ is\ done,\ log\ completion}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>webServers.at(i).countDown\ ==\ 0)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}A\ request\ from\ IP\ "{}}\ <<\ this-\/>webServers.at(i).currentRequest.ipIn\ <<\ \textcolor{stringliteral}{"{}\ has\ been\ processed\ by\ server\ "{}}\ <<\ this-\/>webServers.at(i).serverId\ <<\ endl;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>totalRequestsProcessed++;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ decrement\ timeLeft}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{timeLeft}}-\/-\/;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ generate\ 0-\/2\ new\ requests\ randomly}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numNewRequests\ =\ rand()\ \%\ 3;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numNewRequests;\ i++)\ \{}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>requestQueue.size()\ ==\ this-\/>queueCapacity)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}A\ new\ request\ has\ been\ discarded."{}}\ <<\ endl;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>numRejections++;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_request}{Request}}\ r\ =\ \mbox{\hyperlink{class_request}{Request}}();}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>requestQueue.push(r);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Display\ log\ summary}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ cout\ <<\ endl\ <<\ endl;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Load\ Balancer\ Summary:"{}}\ <<\ endl;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Active\ servers:\ "{}}\ <<\ this-\/>webServers.size()\ <<\ endl;}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Requests\ in\ queue:\ "{}}\ <<\ this-\/>requestQueue.size()\ <<\ endl;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Discarded\ Requests:\ "{}}\ <<\ this-\/>numRejections\ <<\ endl;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Total\ Processed\ Requests:\ "{}}\ <<\ this-\/>totalRequestsProcessed\ <<\ endl;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Ending\ Queue\ Size:\ "{}}\ <<\ this-\/>requestQueue.size()\ <<\ endl;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Task\ time\ range:\ 3\ -\/\ 100\ cycles"{}}\ <<\ endl;}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \};}
+
+\end{DoxyCode}

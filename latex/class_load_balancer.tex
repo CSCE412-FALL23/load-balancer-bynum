@@ -1,0 +1,113 @@
+\doxysection{Load\+Balancer Class Reference}
+\hypertarget{class_load_balancer}{}\label{class_load_balancer}\index{LoadBalancer@{LoadBalancer}}
+
+
+The class for representing a load balancer object. It has seven members\+: request\+Queue, web\+Servers, time\+Left, num\+Servers, queue\+Capacity, num\+Rejections, num\+Unique\+Servers, and total\+Requests\+Processed.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_load_balancer_affc9dc4c283d20bacc85a66cb721fd19}{Load\+Balancer}} (int \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{num\+Servers}}, int \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{time\+Left}})
+\begin{DoxyCompactList}\small\item\em Parameterized constructor for \doxylink{class_load_balancer}{Load\+Balancer} class, taking in the number of servers and the time to run the load balancer. \end{DoxyCompactList}\item 
+\Hypertarget{class_load_balancer_a47688969f3510b6916aa0519c1571431}\label{class_load_balancer_a47688969f3510b6916aa0519c1571431} 
+void {\bfseries Run\+Load\+Balancer} ()
+\begin{DoxyCompactList}\small\item\em Runs the load balancer initial setup and primary loop. This function is called from main.\+cpp. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+queue$<$ \mbox{\hyperlink{class_request}{Request}} $>$ \mbox{\hyperlink{class_load_balancer_a615bae2d6a1e48d5f4e3de93e5c3ef73}{request\+Queue}}
+\item 
+vector$<$ \mbox{\hyperlink{class_web_server}{Web\+Server}} $>$ \mbox{\hyperlink{class_load_balancer_a92410471e31c50cbbb8210801d4ee647}{web\+Servers}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}{time\+Left}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}{num\+Servers}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_ad20412f28ad82e72a35dc817ced14cc9}{queue\+Capacity}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_a7ee50bb5e2f30a9e570056e61d9bd469}{num\+Rejections}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_a80aa181961e77ebe39e2bccdc74ce6bd}{num\+Unique\+Servers}}
+\item 
+int \mbox{\hyperlink{class_load_balancer_a5921ff432ceb1a26bb2a87e7d3db4491}{total\+Requests\+Processed}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The class for representing a load balancer object. It has seven members\+: request\+Queue, web\+Servers, time\+Left, num\+Servers, queue\+Capacity, num\+Rejections, num\+Unique\+Servers, and total\+Requests\+Processed. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_load_balancer_affc9dc4c283d20bacc85a66cb721fd19}\label{class_load_balancer_affc9dc4c283d20bacc85a66cb721fd19} 
+\index{LoadBalancer@{LoadBalancer}!LoadBalancer@{LoadBalancer}}
+\index{LoadBalancer@{LoadBalancer}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{LoadBalancer()}{LoadBalancer()}}
+{\footnotesize\ttfamily Load\+Balancer\+::\+Load\+Balancer (\begin{DoxyParamCaption}\item[{int}]{num\+Servers,  }\item[{int}]{time\+Left }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Parameterized constructor for \doxylink{class_load_balancer}{Load\+Balancer} class, taking in the number of servers and the time to run the load balancer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Servers} & The number of servers to start with. Input by user \\
+\hline
+{\em time\+Left} & The amount of clock cycles left to run the load balancer. Input by user \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_load_balancer_a7ee50bb5e2f30a9e570056e61d9bd469}\label{class_load_balancer_a7ee50bb5e2f30a9e570056e61d9bd469} 
+\index{LoadBalancer@{LoadBalancer}!numRejections@{numRejections}}
+\index{numRejections@{numRejections}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{numRejections}{numRejections}}
+{\footnotesize\ttfamily int Load\+Balancer\+::num\+Rejections}
+
+The number of requests that were rejected because the queue was at capacity. \Hypertarget{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc}\label{class_load_balancer_acaa0f5fe812ec75c7d177c0fb8b181fc} 
+\index{LoadBalancer@{LoadBalancer}!numServers@{numServers}}
+\index{numServers@{numServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{numServers}{numServers}}
+{\footnotesize\ttfamily int Load\+Balancer\+::num\+Servers}
+
+The number of servers to start with. Input by user \Hypertarget{class_load_balancer_a80aa181961e77ebe39e2bccdc74ce6bd}\label{class_load_balancer_a80aa181961e77ebe39e2bccdc74ce6bd} 
+\index{LoadBalancer@{LoadBalancer}!numUniqueServers@{numUniqueServers}}
+\index{numUniqueServers@{numUniqueServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{numUniqueServers}{numUniqueServers}}
+{\footnotesize\ttfamily int Load\+Balancer\+::num\+Unique\+Servers}
+
+The number of unique servers. Used to create unique server IDs. \Hypertarget{class_load_balancer_ad20412f28ad82e72a35dc817ced14cc9}\label{class_load_balancer_ad20412f28ad82e72a35dc817ced14cc9} 
+\index{LoadBalancer@{LoadBalancer}!queueCapacity@{queueCapacity}}
+\index{queueCapacity@{queueCapacity}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{queueCapacity}{queueCapacity}}
+{\footnotesize\ttfamily int Load\+Balancer\+::queue\+Capacity}
+
+The maximum number of requests that can be in the queue at one time. Calculated by multiplying the number of servers by five. \Hypertarget{class_load_balancer_a615bae2d6a1e48d5f4e3de93e5c3ef73}\label{class_load_balancer_a615bae2d6a1e48d5f4e3de93e5c3ef73} 
+\index{LoadBalancer@{LoadBalancer}!requestQueue@{requestQueue}}
+\index{requestQueue@{requestQueue}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{requestQueue}{requestQueue}}
+{\footnotesize\ttfamily queue$<$\mbox{\hyperlink{class_request}{Request}}$>$ Load\+Balancer\+::request\+Queue}
+
+The queue of requests waiting to be processed \Hypertarget{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8}\label{class_load_balancer_a620113358e0e4412ee6a6ebf2c879fc8} 
+\index{LoadBalancer@{LoadBalancer}!timeLeft@{timeLeft}}
+\index{timeLeft@{timeLeft}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{timeLeft}{timeLeft}}
+{\footnotesize\ttfamily int Load\+Balancer\+::time\+Left}
+
+The amount of clock cycles left to run the load balancer. Input by user \Hypertarget{class_load_balancer_a5921ff432ceb1a26bb2a87e7d3db4491}\label{class_load_balancer_a5921ff432ceb1a26bb2a87e7d3db4491} 
+\index{LoadBalancer@{LoadBalancer}!totalRequestsProcessed@{totalRequestsProcessed}}
+\index{totalRequestsProcessed@{totalRequestsProcessed}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{totalRequestsProcessed}{totalRequestsProcessed}}
+{\footnotesize\ttfamily int Load\+Balancer\+::total\+Requests\+Processed}
+
+The total number of requests processed by the load balancer. \Hypertarget{class_load_balancer_a92410471e31c50cbbb8210801d4ee647}\label{class_load_balancer_a92410471e31c50cbbb8210801d4ee647} 
+\index{LoadBalancer@{LoadBalancer}!webServers@{webServers}}
+\index{webServers@{webServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{webServers}{webServers}}
+{\footnotesize\ttfamily vector$<$\mbox{\hyperlink{class_web_server}{Web\+Server}}$>$ Load\+Balancer\+::web\+Servers}
+
+The vector of current web servers being used 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Load\+Balancer.\+cpp\end{DoxyCompactItemize}
