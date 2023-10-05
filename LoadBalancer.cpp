@@ -6,17 +6,29 @@
 
 #include "WebServer.cpp"
 using namespace std;
+
+/**
+ * @brief The class for representing a load balancer object. It has seven members: requestQueue, webServers, timeLeft, numServers, queueCapacity, numRejections, numUniqueServers, and totalRequestsProcessed.
+ * 
+ * 
+ */
 class LoadBalancer {
     public:
-    queue<Request> requestQueue;
-    vector<WebServer> webServers;
-    int timeLeft;
-    int numServers;
-    int queueCapacity;
-    int numRejections;
-    int numUniqueServers;
-    int totalRequestsProcessed;
+    queue<Request> requestQueue; /**< The queue of requests waiting to be processed*/
+    vector<WebServer> webServers; /**< The vector of current web servers being used*/
+    int timeLeft; /**< The amount of clock cycles left to run the load balancer. Input by user*/
+    int numServers; /**< The number of servers to start with. Input by user*/
+    int queueCapacity; /**< The maximum number of requests that can be in the queue at one time. Calculated by multiplying the number of servers by five.*/
+    int numRejections; /**< The number of requests that were rejected because the queue was at capacity.*/
+    int numUniqueServers; /**< The number of unique servers. Used to create unique server IDs.*/
+    int totalRequestsProcessed; /**< The total number of requests processed by the load balancer.*/
 
+    /**
+     * @brief Parameterized constructor for LoadBalancer class, taking in the number of servers and the time to run the load balancer.
+     * 
+     * @param numServers The number of servers to start with. Input by user
+     * @param timeLeft The amount of clock cycles left to run the load balancer. Input by user
+     */
     LoadBalancer(int numServers, int timeLeft) {
         cout << "Initializing Load Balancer..." << endl;
 
@@ -33,6 +45,10 @@ class LoadBalancer {
         
     }
 
+    /**
+     * @brief Runs the load balancer initial setup and primary loop. This function is called from main.cpp
+     * 
+     */
     void RunLoadBalancer() {
         cout << "Running Load Balancer..." << endl;
 

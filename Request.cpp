@@ -3,12 +3,27 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
+
+
+
+/**
+ * @brief The class for representing a request object. It has three members: ipIn, ipOut, and requestTime.
+ * 
+ * 
+ */
 class Request {
 public:
-    string ipIn;
-    string ipOut;
-    int requestTime;
+    string ipIn; /**< Ip address sending request*/
+    string ipOut; /**< Ip address receiving request*/
+    int requestTime; /**< The amount of clock cycles needed to process the request*/
 
+    /**
+     * @brief Parameterized constructor for Request class
+     * 
+     * @param ipIn The ip address sending the request
+     * @param ipOut The ip address receiving the request
+     * @param time The amount of clock cycles needed to process the request
+     */
     Request(string ipIn, string ipOut, int time) {
         this->ipIn = ipIn;
 
@@ -17,6 +32,10 @@ public:
         this->requestTime = time;
     }
 
+    /**
+     * @brief Default constructor for Request class
+     * 
+     */
     Request() {
         this->ipIn = this->GenerateRandomIp();
 
@@ -26,6 +45,11 @@ public:
     
     }
 
+    /**
+     * @brief Generates a random ip address
+     * 
+     * @return string The random ip address
+     */
     string GenerateRandomIp() {
         int octet1 = rand() % 255;
         int octet2 = rand() % 255;

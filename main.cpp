@@ -6,6 +6,13 @@
 #include <vector>
 #include <queue>
 
+using namespace std;
+
+/**
+ * @brief The main function. It takes in user input for the number of servers and the total run time, then creates a LoadBalancer object and runs it.
+ * 
+ * @return int 
+ */
 int main () {
 
 // Process User input
